@@ -6,20 +6,18 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/gorilla/sessions"
-	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
-var secretKey = "secret"
+var secretKey = "secretKey"
 
 func login(c echo.Context) error {
 	username := c.FormValue("username")
 	password := c.FormValue("password")
 
 	// Throws unauthorized error
-	if username != "jon" || password != "shhh!" {
+	if username != "admin" || password != "admin" {
 		return echo.ErrUnauthorized
 	}
 
@@ -28,7 +26,7 @@ func login(c echo.Context) error {
 
 	// Set claims
 	claims := token.Claims.(jwt.MapClaims)
-	claims["name"] = "Jon Snow"
+	claims["name"] = "ADMIN 1"
 	claims["admin"] = true
 	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
 
@@ -58,18 +56,6 @@ func restricted(c echo.Context) error {
 	return c.String(http.StatusOK, msg)
 }
 
-func getSession(c echo.Context) error {
-	sess, _ := session.Get("session", c)
-	sess.Options = &sessions.Options{
-		Path:     "/",
-		MaxAge:   86400 * 7,
-		HttpOnly: true,
-	}
-	sess.Values["foo"] = "bar"
-	sess.Save(c.Request(), c.Response())
-	return c.NoContent(http.StatusOK)
-}
-
 var MiddlewareJWT = middleware.JWT([]byte(secretKey))
 
 func main() {
@@ -78,16 +64,12 @@ func main() {
 	// Middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
-	e.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
-
-	// Login route
-	e.POST("/login", login)
 
 	// Unauthenticated route
 	e.GET("/", accessible)
 
-	// Get Session
-	e.GET("/session", getSession)
+	// Login route
+	e.POST("/login", login)
 
 	// Restricted group
 	r := e.Group("/restricted")

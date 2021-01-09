@@ -1,3 +1,3 @@
-# Go Session x JWT
+# Go Session x JWT x Login
 
-This project only experimental for Session and JWT
+This project only experimental for Session, JWT, and Login
