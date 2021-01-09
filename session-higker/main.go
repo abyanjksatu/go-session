@@ -6,6 +6,7 @@ import (
 
 	"github.com/higker/go-session"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func init() {
@@ -43,6 +44,10 @@ type SessionData struct {
 
 func main() {
 	e := echo.New()
+
+	// Middleware
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
 
 	e.GET("/", index)
 	e.POST("/set", set)

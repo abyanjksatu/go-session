@@ -3,6 +3,7 @@ module go-session
 go 1.15
 
 require (
+	github.com/alexedwards/scs/v2 v2.4.0
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/garyburd/redigo v1.6.2 // indirect
