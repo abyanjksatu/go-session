@@ -49,3 +49,8 @@ Req/Bytes counts sampled once per second.
 
 49k requests in 10.03s, 12.7 MB read
 ```
+
+## Contras using redis
+1. Storing user session on Redis is not bad practice, however using Redis for authorization/authentication purposes could result in security issues. In an ideal microservice architecture, services need to be as stateless as they can. By giving the authorization job to redis you are creating an extra layer that you need to manage on every request. What will happen when user info changes? You will need to update redis too and when it is out of sync with the Authorization server, then problems will start to emerge. It is also not bad practice to use separate Authorization server behind your gateway. Source: https://stackoverflow.com/questions/63237218/api-gateway-login-microservice-redis
+
+2. There are problem using this scheme that scalability is a problem, and if the Redis cache instance goes down then all the sessions will be deleted for current logged in users and the entire system will remain non-functional, though the services are live. To solve this problem JWT (JSON Web Token). Source: https://dev.to/rishavsaha98/user-authorization-in-micro-service-architecture-with-jwt-2p6k
