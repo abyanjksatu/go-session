@@ -13,7 +13,7 @@ func init() {
 	cfg := session.Config{
 		CookieName:     "sessionID",
 		Path:           "/",
-		MaxAge:         30 * 24 * 60 * 60,
+		MaxAge:         7 * 24 * 60 * 60,
 		HttpOnly:       true,
 		Secure:         false,
 		RedisAddr:      "127.0.0.1:6379",
@@ -70,7 +70,7 @@ func set(c echo.Context) error {
 		c.Logger().Error(err.Error())
 	}
 
-	err = ctx.Set("K1", sessionData)
+	err = ctx.Set("sessionData", sessionData)
 	if err != nil {
 		c.Logger().Error(err.Error())
 	}
@@ -83,18 +83,27 @@ func get(c echo.Context) error {
 	if err != nil {
 		c.Logger().Error(err.Error())
 	}
-	bytes, err := ctx.Get("K1")
-	if err != nil {
-		c.Logger().Error(err.Error())
-	}
+	bytes, _ := ctx.Get("sessionData")
+	
 	sd := new(SessionData)
+	
 	//Deserialize data into objects
-	err = session.DeSerialize(bytes, sd)
-	if err != nil {
-		c.Logger().Error(err.Error())
-	}
+	_ = session.DeSerialize(bytes, sd)
+	
 
 	return c.JSON(http.StatusOK, sd)
+}
+
+func del(c echo.Context) error {
+	ctx, err := session.Ctx(c.Response().Writer, c.Request())
+	if err != nil {
+		c.Logger().Error(err.Error())
+	}
+	err = ctx.Del("sessionData")
+	if err != nil {
+		c.Logger().Error(err.Error())
+	}
+	return c.HTML(http.StatusOK, "delete v1 successful")
 }
 
 func clean(c echo.Context) error {
@@ -107,18 +116,6 @@ func clean(c echo.Context) error {
 	ctx.Clean(c.Response().Writer)
 
 	return c.HTML(http.StatusOK, "clean data ok")
-}
-
-func del(c echo.Context) error {
-	ctx, err := session.Ctx(c.Response().Writer, c.Request())
-	if err != nil {
-		c.Logger().Error(err.Error())
-	}
-	err = ctx.Del("K1")
-	if err != nil {
-		c.Logger().Error(err.Error())
-	}
-	return c.HTML(http.StatusOK, "delete v1 successful")
 }
 
 func index(c echo.Context) error {
