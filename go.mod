@@ -7,7 +7,6 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/garyburd/redigo v1.6.2 // indirect
-	github.com/gofrs/uuid v4.0.0+incompatible
 	github.com/google/go-cmp v0.5.4 // indirect
 	github.com/gorilla/securecookie v1.1.1
 	github.com/gorilla/sessions v1.2.1
