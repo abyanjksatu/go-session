@@ -23,3 +23,9 @@ Req/Bytes counts sampled once per second.
 
 199k requests in 10.02s, 61.2 MB read
 ```
+
+## Session Time
+* tiket.com -> 7 days (PHPSESSID:3cf25649-5e67-413b-8d5f-da689b0f2a9d) --> UUID
+* traveloka -> 7 days (sessionId:6e30a1cc-5104-1f9e-f10c-999cabccd817) --> UUID
+* tokopedia -> ? days (moe_uuid:959f3f72-3206-4d19-839c-9b0040ecfcd1) --> UUID
+* shopee -> ? days (csrftoken:zX9bHLGpJp76HSIkPnXGeSu1cQHhGTY4) ---> ?
